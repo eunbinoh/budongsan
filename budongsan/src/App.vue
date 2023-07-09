@@ -1,25 +1,14 @@
 <template>
-
-  <!-- 할인 안내-->
-  <Discount />
-  
-  <!-- 상세 모달창 -->
-  <transition name="fade">
-    <Modal 
-      :roomInfos="roomInfos" 
-      :clickId="clickId" 
-      :modalOpenYn="modalOpenYn"
-      @closeModal="modalOpenYn=false" 
-    />
-  </transition>
-  <!-- <div class="start" :class="{ end : modalOpenYn }">
-    <Modal />
-  </div> -->
-
   <!-- 메뉴 -->
   <div class="menu" >
     <a v-for="menu in menus" :key="menu">{{ menu }}</a>
   </div>
+
+  <!-- 할인 안내-->
+  <Discount v-if="showDiscnt === true"/>
+
+  <button @click="priceSort">가격순정렬</button>
+  <button @click="sortBack">초기화</button>
 
   <!-- 메인 -->
   <Card 
@@ -28,9 +17,21 @@
     v-for="(roomInfo, i) in roomInfos" 
     :key="roomInfo" 
     @clickTitle="openModal($event), $event"
-    @increaseCnt="increaseCnt($event), $event"
+    @increaseCnt="increaseCnt(), $event"
   />
 
+  <!-- 상세 모달창 -->
+  <transition name="fade">
+  <Modal 
+    :roomInfos="roomInfos" 
+    :clickId="clickId" 
+    :modalOpenYn="modalOpenYn"
+    @closeModal="modalOpenYn=false" 
+  />
+  </transition>
+  <!-- <div class="start" :class="{ end : modalOpenYn }">
+    <Modal />
+  </div> -->
 
 </template>
 
@@ -46,25 +47,49 @@ export default {
     return {
       menus : ['Home','Shop','About'],
       roomInfos : roomInfo,
+      roomsOrigin : [...roomInfo], //데이터 변형없게 하기 위해 원본의 사본 저장
       clickId : 0,
       modalOpenYn : false,
-      count : 0
+      count : 0,
+      showDiscnt : false
     }
   },
   methods: {
-    increaseCnt(count) {
-      this.count = count++;
+    increaseCnt() {
+      this.count += 1;
     },
     openModal(id){
+      console.log(this.roomInfos[this.clickId])
       this.modalOpenYn = true; 
       this.clickId = id;
+    },
+    priceSort(){
+      this.roomInfos.sort(function(a,b){
+        return a.price - b.price ; // 양수,음수 결과에 따라 정렬함 (오름차순)
+        // return b.price - a.price ; // 내림차순
+      });
+    },
+    sortBack(){
+      this.roomInfos = [...this.roomsOrigin];
     }
+  },
+  mounted(){
+    setTimeout(() => {
+      /**
+       * ()=> arrow function 사용 장점
+       * 바깥에 있는 this를 가져와서 함수 실행 가능
+       * cf) function() -> this. ((X))
+      */
+      // ()=> arrow function 사용 장점
+      // 바깥에 있는 this를 가져와서 함수 실행 가능
+      // cf) function() -> X
+      this.showDiscnt = true;
+    }, 2000);
   },
   components: {
     Discount,
     Card,
     Modal
-
   }
 }
 </script>

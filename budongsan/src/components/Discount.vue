@@ -11,6 +11,13 @@ export default {
         return {
             discountRat : 30
         }
+    },
+    mounted(){
+      setInterval(()=> {
+        if( this.discountRat > 25){
+          this.discountRat--;
+        }
+      }, 1000)
     }
 }
 </script>

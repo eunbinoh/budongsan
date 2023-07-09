@@ -1,7 +1,7 @@
 export default [{
     id : 0,
     title: "Sinrim station 30 meters away",
-    image: "`${./assets/room0.jpg}`",
+    image: "./assets/room0.jpg",
     content: "18년 신축공사한 남향 원룸 ☀️, 공기청정기 제공",
     price: 340000
     },

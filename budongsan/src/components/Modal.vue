@@ -1,7 +1,7 @@
 <template>
     <div class="black-bg" v-if="modalOpenYn == true">
     <div class="white-bg">
-      <img :src="roomInfos[clickId].image">
+      <img src="../assets/room0.jpg">
       <h4>{{ roomInfos[clickId].title }}</h4>
       <p>{{ roomInfos[clickId].content }}</p>
       
@@ -25,7 +25,7 @@ export default {
     },
     watch : {
         //감시하고싶은 변수명으로 함수명
-        month(n ){
+        month(n){
             if (n > 12){
                 alert('12개월 이상 입력할 수 없습니다.');
                 this.month = 12;
@@ -34,7 +34,6 @@ export default {
                 alert('숫자만 입력하세요.')
                 this.month = 1;
             }
-            // if(n.InstanceType)
         }
     },
     props: {
@@ -44,7 +43,12 @@ export default {
     },
     methods:{
 
-    }
+    },
+    // beforeUpdate(){
+    //     if (this.month === 2){
+    //         alert('2개월 할인은 선택할 수 없습니다.');
+    //     } 
+    // }
 }
 </script>
 
